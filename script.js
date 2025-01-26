@@ -1,30 +1,29 @@
-// Crear elementos del cursor
-var cursor = document.createElement('div');
-cursor.className = 'custom-cursor';
-document.body.appendChild(cursor);
-
-var innerCursor = document.createElement('div');
-innerCursor.className = 'custom-cursor inner';
-document.body.appendChild(innerCursor);
-
-// Mover cursor
-document.addEventListener('mousemove', function(e) {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-    innerCursor.style.left = e.clientX + 'px';
-    innerCursor.style.top = e.clientY + 'px';
-});
-
-// Efectos hover
-var elementosInteractivos = document.querySelectorAll('a, button, .hoverable');
-for(var i = 0; i < elementosInteractivos.length; i++) {
-    elementosInteractivos[i].addEventListener('mouseenter', function() {
-        cursor.style.transform = 'scale(1.5)';
-        cursor.style.borderColor = getComputedStyle(this).getPropertyValue('--cursor-color');
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    // Crear elementos
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
     
-    elementosInteractivos[i].addEventListener('mouseleave', function() {
-        cursor.style.transform = 'scale(1)';
-        cursor.style.borderColor = 'var(--cursor-color)';
+    const inner = document.createElement('div');
+    inner.className = 'custom-cursor inner';
+    document.body.appendChild(inner);
+
+    // Actualizar posición
+    document.addEventListener('mousemove', function(e) {
+        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        inner.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
     });
-}
+
+    // Efectos hover
+    document.querySelectorAll('a, button, .hoverable').forEach(function(el) {
+        el.addEventListener('mouseenter', function() {
+            cursor.style.borderColor = '#00f3ff';
+            cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
+        });
+        
+        el.addEventListener('mouseleave', function() {
+            cursor.style.borderColor = 'var(--accent-color)';
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+    });
+});
