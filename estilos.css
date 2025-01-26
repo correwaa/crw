@@ -1,175 +1,185 @@
-
+/* estilos.css */
 :root {
-    --primary-color: #0a0a12; /* Negro azulado profundo */
-    --secondary-color: #1a1a2e; /* Azul oscuro atmosférico */
-    --accent-color: #00f3ff; /* Cian neón */
-    --text-primary: #e0e0e8; /* Gris claro brillante */
+    --primary-color: #0a0a12;
+    --secondary-color: #1a1a2e;
+    --accent-color: #00f3ff;
+    --text-primary: #e0e0e8;
     --gradient-bg: linear-gradient(45deg, #0a0a12 30%, #1a1a2e 100%);
 }
-/* Añade esto al CSS */
 
-.custom-cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--cursor-color);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    mix-blend-mode: difference;
-    transition: 
-        transform 0.3s ease,
-        background 0.3s ease,
-        border-color 0.3s ease;
-    z-index: 9999;
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-
-.custom-cursor.inner {
-    width: 6px;
-    height: 6px;
-    background: var(--cursor-color);
-    transform: translate(-50%, -50%);
-}
-
-/* Efectos al interactuar */
-a, button, .hoverable {
-    cursor: none !important;
-}
-
-a:hover ~ .custom-cursor,
-button:hover ~ .custom-cursor {
-    transform: scale(1.5);
-    background: var(--cursor-color);
-}
-
-/* Cambia color del cursor según elemento */
-.text-cyan { --cursor-color: var(--accent-color) !important; }
-.text-white { --cursor-color: var(--text-primary) !important; }
 
 body {
     background: var(--gradient-bg) fixed;
-    font-family: 'Roboto', Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: var(--text-primary);
-    margin: 0;
     line-height: 1.6;
-     cursor: none;
-    --cursor-color: var(--accent-color); /* Usa el cian neón por defecto */
+    cursor: none;
+    overflow-x: hidden;
 }
 
+/* Navbar futurista */
 .navbar {
-    background: rgba(10, 10, 18, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    background: rgba(10, 10, 18, 0.98);
+    backdrop-filter: blur(15px);
+    padding: 1.2rem 0;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.15);
 }
 
 .navbar a {
     color: var(--text-primary);
-    padding: 1rem 2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    position: relative;
+    padding: 1rem 2.5rem;
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
 }
 
 .navbar a:hover {
     color: var(--accent-color);
-}
-
-.navbar a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--accent-color);
-    transition: all 0.3s ease;
-}
-
-.navbar a:hover::after {
-    width: 70%;
-    left: 15%;
-}
-
-.content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 2rem;
-}
-
-section {
-    margin: 2rem 0;
-    padding: 2rem;
-    background: rgba(10, 10, 18, 0.7);
-    backdrop-filter: blur(8px);
-    border-radius: 12px;
-    border: 1px solid rgba(0, 243, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;
-}
-
-section:hover {
-    transform: translateY(-5px);
-}
-
-h1, h2, h3, h4 {
-    font-family: 'Orbitron', sans-serif;
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
-}
-
-h1 {
-    font-size: 4rem;
     text-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
 }
 
-h2 {
-    font-size: 2rem;
-    font-weight: 300;
+/* Contenido principal */
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
 }
 
+section {
+    margin: 5rem 0;
+    padding: 3rem;
+    background: rgba(10, 10, 18, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+    transform: translateY(0);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+section:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 45px rgba(0, 243, 255, 0.1);
+}
+
+/* Tipografía especial */
+h1, h2, h3, h4 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 4.5rem;
+    text-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+}
+
+h2 {
+    font-size: 2.2rem;
+    font-weight: 400;
+}
+
+/* Servicios */
 .service-item {
-    padding: 2rem;
-    margin: 2rem 0;
-    border-left: 3px solid var(--accent-color);
-    transition: all 0.3s ease;
+    padding: 2.5rem;
+    margin: 2.5rem 0;
+    border-left: 4px solid var(--accent-color);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .service-item:hover {
-    background: rgba(26, 26, 46, 0.3);
-    transform: translateX(10px);
+    background: rgba(26, 26, 46, 0.4);
+    transform: translateX(15px);
 }
 
+/* Contacto */
 .contact-info {
     display: grid;
-    gap: 1.5rem;
-    font-size: 1.1rem;
+    gap: 2rem;
+    font-size: 1.2rem;
 }
 
 .social-links a {
+    display: inline-block;
     color: var(--text-primary);
-    margin-right: 1.5rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--accent-color);
-    border-radius: 4px;
+    margin-right: 2rem;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid var(--accent-color);
+    border-radius: 6px;
     transition: all 0.3s ease;
 }
 
 .social-links a:hover {
     background: var(--accent-color);
     color: var(--primary-color);
+    box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
 }
 
-/* Efectos de aparición suave */
+/* Cursor personalizado */
+.custom-cursor {
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    transition: 
+        transform 0.25s ease,
+        opacity 0.25s ease,
+        border-color 0.25s ease;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 243, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+.custom-cursor.inner {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-color);
+    box-shadow: 0 0 20px var(--accent-color);
+}
+
+/* Animaciones */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 section {
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        padding: 2rem 1rem;
+    }
+    
+    h1 {
+        font-size: 3rem;
+    }
+    
+    .navbar a {
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+    
+    section {
+        padding: 2rem;
+        margin: 3rem 0;
+    }
 }
