@@ -6,6 +6,44 @@
     --text-primary: #e0e0e8; /* Gris claro brillante */
     --gradient-bg: linear-gradient(45deg, #0a0a12 30%, #1a1a2e 100%);
 }
+/* Añade esto al CSS */
+
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--cursor-color);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    transition: 
+        transform 0.3s ease,
+        background 0.3s ease,
+        border-color 0.3s ease;
+    z-index: 9999;
+}
+
+.custom-cursor.inner {
+    width: 6px;
+    height: 6px;
+    background: var(--cursor-color);
+    transform: translate(-50%, -50%);
+}
+
+/* Efectos al interactuar */
+a, button, .hoverable {
+    cursor: none !important;
+}
+
+a:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor {
+    transform: scale(1.5);
+    background: var(--cursor-color);
+}
+
+/* Cambia color del cursor según elemento */
+.text-cyan { --cursor-color: var(--accent-color) !important; }
+.text-white { --cursor-color: var(--text-primary) !important; }
 
 body {
     background: var(--gradient-bg) fixed;
@@ -13,6 +51,8 @@ body {
     color: var(--text-primary);
     margin: 0;
     line-height: 1.6;
+     cursor: none;
+    --cursor-color: var(--accent-color); /* Usa el cian neón por defecto */
 }
 
 .navbar {
