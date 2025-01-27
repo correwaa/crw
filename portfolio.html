@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRW | Obras Generativas</title>
+    <title>CRW | Portfolio Generativo</title>
     <link rel="stylesheet" href="estilos.css">
-    <!-- Incluir p5.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Barra de navegación -->
     <nav class="navbar">
         <a href="index.html">Inicio</a>
         <a href="#portfolio">Portfolio</a>
@@ -20,123 +17,140 @@
         <a href="#contact">Contacto</a>
     </nav>
 
-    <!-- Contenido principal -->
     <div class="content">
-        
-        <!-- Sección Portfolio -->
         <section id="portfolio">
-            <h1>Obras Generativas</h1>
-            <h2>Exploraciones algorítmicas en p5.js</h2>
+            <h1>Exploraciones Digitales</h1>
+            <h2>Arte generativo en tiempo real</h2>
             
-            <!-- Grid de obras -->
             <div class="art-grid">
-
                 <!-- Obra 1 -->
                 <div class="artwork-item">
-                    <div id="obra-1" class="p5-sketch"></div>
+                    <div class="sketch-container">
+                        <div id="obra-1" class="p5-sketch"></div>
+                    </div>
                     <div class="artwork-info">
-                        <h3>Geometrías Dinámicas</h3>
-                        <p>Generación procedural de formas en tiempo real</p>
-                        <a href="https://github.com/tu-usuario/geometrias-dinamicas" target="_blank" class="code-link">Ver código</a>
+                        <h3>Caos Ordenado</h3>
+                        <p>Sistemas de partículas con comportamiento emergente</p>
+                        <a href="https://github.com/tu-usuario/caos-ordenado" target="_blank" class="code-link">
+                            <span class="link-icon">⟢</span> Código Fuente
+                        </a>
                     </div>
                 </div>
 
                 <!-- Obra 2 -->
                 <div class="artwork-item">
-                    <div id="obra-2" class="p5-sketch"></div>
+                    <div class="sketch-container">
+                        <div id="obra-2" class="p5-sketch"></div>
+                    </div>
                     <div class="artwork-info">
-                        <h3>Flujos Vectoriales</h3>
-                        <p>Simulación de partículas con campos de fuerza</p>
-                        <a href="https://github.com/tu-usuario/flujos-vectoriales" target="_blank" class="code-link">Ver código</a>
+                        <h3>Redes Neuronales Visuales</h3>
+                        <p>Interpretación gráfica de procesos de machine learning</p>
+                        <a href="https://github.com/tu-usuario/redes-neuronales-visuales" target="_blank" class="code-link">
+                            <span class="link-icon">⟢</span> Código Fuente
+                        </a>
                     </div>
                 </div>
-
-                <!-- Añadir más obras según sea necesario -->
-                
             </div>
         </section>
-
     </div>
 
     <!-- Scripts de las obras -->
     <script>
-        // Sketch 1 - Geometrías Dinámicas
-        new p5(p => {
-            p.setup = () => {
-                const canvas = p.createCanvas(500, 500);
-                canvas.parent('obra-1');
-                p.noStroke();
-            };
-
-            p.draw = () => {
-                p.background(10, 10, 30);
-                for(let i = 0; i < 50; i++) {
-                    p.fill(p.map(i, 0, 50, 0, 255), 150, 200);
-                    p.ellipse(
-                        p.width/2 + p.sin(p.frameCount * 0.01 + i) * 200,
-                        p.height/2 + p.cos(p.frameCount * 0.015 + i) * 200,
-                        p.sin(p.frameCount * 0.02 + i) * 30 + 40
-                    );
-                }
-            };
-        }, 'obra-1');
-
-        // Sketch 2 - Flujos Vectoriales
-        new p5(p => {
+        // Obra 1 - Caos Ordenado
+        new p5((p) => {
             let particles = [];
             
             p.setup = () => {
-                const canvas = p.createCanvas(500, 500);
-                canvas.parent('obra-2');
-                for(let i = 0; i < 100; i++) {
-                    particles.push(new Particle());
+                const container = document.getElementById('obra-1').parentElement;
+                const canvas = p.createCanvas(container.offsetWidth, container.offsetHeight);
+                canvas.parent('obra-1');
+                p.colorMode(p.HSB, 360);
+                
+                for(let i = 0; i < 200; i++) {
+                    particles.push({
+                        pos: p.createVector(p.random(p.width), p.random(p.height)),
+                        vel: p.createVector(0, 0),
+                        hue: p.random(360)
+                    });
                 }
             };
 
-            class Particle {
-                constructor() {
-                    this.pos = p.createVector(p.random(p.width), p.random(p.height));
-                    this.vel = p.createVector(0, 0);
-                    this.acc = p.createVector(0, 0);
-                }
+            p.draw = () => {
+                p.background(10, 0.1);
+                
+                particles.forEach(particle => {
+                    let angle = p.noise(particle.pos.x * 0.005, particle.pos.y * 0.005) * p.TWO_PI * 4;
+                    particle.vel.add(p5.Vector.fromAngle(angle).mult(0.5));
+                    particle.pos.add(particle.vel);
+                    particle.vel.mult(0.9);
+                    
+                    p.stroke(particle.hue, 280, 320, 0.5);
+                    p.point(particle.pos.x, particle.pos.y);
+                    
+                    if(particle.pos.x < 0 || particle.pos.x > p.width || particle.pos.y < 0 || particle.pos.y > p.height) {
+                        particle.pos.set(p.random(p.width), p.random(p.height));
+                    }
+                });
+            };
 
-                update() {
-                    this.vel.add(this.acc);
-                    this.pos.add(this.vel);
-                    this.acc.mult(0);
-                }
+            p.windowResized = () => {
+                const container = document.getElementById('obra-1').parentElement;
+                p.resizeCanvas(container.offsetWidth, container.offsetHeight);
+            };
+        }, 'obra-1');
 
-                applyForce(f) {
-                    this.acc.add(f);
+        // Obra 2 - Redes Neuronales Visuales
+        new p5((p) => {
+            let nodes = [];
+            let connections = [];
+            
+            p.setup = () => {
+                const container = document.getElementById('obra-2').parentElement;
+                const canvas = p.createCanvas(container.offsetWidth, container.offsetHeight);
+                canvas.parent('obra-2');
+                
+                for(let i = 0; i < 50; i++) {
+                    nodes.push({
+                        pos: p.createVector(p.random(p.width), p.random(p.height)),
+                        vel: p.createVector(p.random(-1, 1), p.random(-1, 1)),
+                        size: p.random(5, 15)
+                    });
                 }
-
-                edges() {
-                    if(this.pos.x > p.width) this.pos.x = 0;
-                    if(this.pos.x < 0) this.pos.x = p.width;
-                    if(this.pos.y > p.height) this.pos.y = 0;
-                    if(this.pos.y < 0) this.pos.y = p.height;
-                }
-
-                show() {
-                    p.stroke(0, 243, 255, 50);
-                    p.point(this.pos.x, this.pos.y);
-                }
-            }
+            };
 
             p.draw = () => {
-                p.background(10, 15);
-                particles.forEach(particle => {
-                    let angle = p.noise(particle.pos.x * 0.01, particle.pos.y * 0.01) * p.TWO_PI;
-                    let force = p5.Vector.fromAngle(angle);
-                    force.setMag(0.1);
-                    particle.applyForce(force);
-                    particle.update();
-                    particle.edges();
-                    particle.show();
+                p.background(15, 15, 30, 15);
+                
+                nodes.forEach(node => {
+                    node.pos.add(node.vel);
+                    if(node.pos.x < 0 || node.pos.x > p.width) node.vel.x *= -1;
+                    if(node.pos.y < 0 || node.pos.y > p.height) node.vel.y *= -1;
+                    
+                    p.fill(200, 150, 250);
+                    p.noStroke();
+                    p.ellipse(node.pos.x, node.pos.y, node.size);
                 });
+
+                nodes.forEach((a, i) => {
+                    nodes.slice(i + 1).forEach(b => {
+                        let d = p.dist(a.pos.x, a.pos.y, b.pos.x, b.pos.y);
+                        if(d < 150) {
+                            p.stroke(0, 243, 255, p.map(d, 0, 150, 255, 50));
+                            p.line(a.pos.x, a.pos.y, b.pos.x, b.pos.y);
+                        }
+                    });
+                });
+            };
+
+            p.windowResized = () => {
+                const container = document.getElementById('obra-2').parentElement;
+                p.resizeCanvas(container.offsetWidth, container.offsetHeight);
             };
         }, 'obra-2');
     </script>
+
+    <!-- Script del cursor -->
+    <script src="cursor.js"></script>
 
 </body>
 </html>
