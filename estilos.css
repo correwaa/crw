@@ -153,6 +153,47 @@ h2 {
     box-shadow: 0 0 20px var(--accent-color);
 }
 
+/* Modifica el CSS del grid */
+.art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 2rem auto;
+}
+
+.artwork-item {
+    width: 100%;
+    background: rgba(10, 10, 18, 0.8);
+    border-radius: 15px;
+    padding: 1rem;
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.p5-sketch {
+    width: 100%;
+    height: 80vh; /* Altura relativa al viewport */
+    min-height: 400px;
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Añade media queries para responsividad */
+@media (max-width: 768px) {
+    .art-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+    }
+    
+    .p5-sketch {
+        height: 60vh;
+    }
+}
+
 /* Animaciones */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(30px); }
