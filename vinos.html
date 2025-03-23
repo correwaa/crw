@@ -1,0 +1,228 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Fermentación</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.24/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f6fa;
+        }
+
+        .header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #34495e;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #219a52;
+        }
+
+        button:disabled {
+            background: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🍇 Control de Barriles - Vendimia 2025</h1>
+        <p>Barriles disponibles: 
+            2x Malbec 100L | 
+            1x Cabernet Franc 100L | 
+            1x Merlot 100L | 
+            1x Merlot 50L | 
+            1x Cabernet Franc 50L | 
+            2x P. Gimenez 50L
+        </p>
+    </div>
+
+    <div class="form-container">
+        <form id="registroForm">
+            <div class="form-group">
+                <label for="barril">Barril:</label>
+                <select id="barril" required>
+                    <option value="">Seleccione un barril</option>
+                    <option value="M100-1">Malbec 100L - Barril 1</option>
+                    <option value="M100-2">Malbec 100L - Barril 2</option>
+                    <option value="CF100">Cabernet Franc 100L</option>
+                    <option value="M100">Merlot 100L</option>
+                    <option value="M50">Merlot 50L</option>
+                    <option value="CF50">Cabernet Franc 50L</option>
+                    <option value="PG50-1">P. Gimenez 50L - Barril 1</option>
+                    <option value="PG50-2">P. Gimenez 50L - Barril 2</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
+            </div>
+
+            <div class="form-group">
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" required>
+            </div>
+
+            <div class="form-group">
+                <label for="temp">Temperatura (°C):</label>
+                <input type="number" id="temp" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="densidad">Densidad (kg/m³):</label>
+                <input type="number" id="densidad" step="0.01" required>
+            </div>
+
+            <button type="submit">Registrar Medición</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Barril</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Temperatura</th>
+                <th>Densidad</th>
+            </tr>
+        </thead>
+        <tbody id="datos">
+            <!-- Datos se insertarán aquí -->
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <button id="exportarBtn" disabled>Generar Reporte PDF</button>
+    </div>
+
+    <script>
+        const registros = [];
+        
+        document.getElementById('registroForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const nuevoRegistro = {
+                barril: document.getElementById('barril').selectedOptions[0].text,
+                fecha: document.getElementById('fecha').value,
+                hora: document.getElementById('hora').value,
+                temperatura: document.getElementById('temp').value,
+                densidad: document.getElementById('densidad').value
+            };
+            
+            registros.push(nuevoRegistro);
+            actualizarTabla();
+            document.getElementById('exportarBtn').disabled = false;
+            e.target.reset();
+        });
+
+        function actualizarTabla() {
+            const tbody = document.getElementById('datos');
+            tbody.innerHTML = registros.map(registro => `
+                <tr>
+                    <td>${registro.barril}</td>
+                    <td>${registro.fecha}</td>
+                    <td>${registro.hora}</td>
+                    <td>${registro.temperatura}°C</td>
+                    <td>${registro.densidad} kg/m³</td>
+                </tr>
+            `).join('');
+        }
+
+        document.getElementById('exportarBtn').addEventListener('click', () => {
+            if (registros.length === 0) {
+                alert('No hay datos para exportar');
+                return;
+            }
+            
+            if (confirm('¿Generar reporte PDF con todos los registros?')) {
+                const doc = new jspdf.jsPDF();
+                doc.setFontSize(18);
+                doc.text('Reporte de Fermentación', 15, 20);
+                
+                const headers = [['Barril', 'Fecha', 'Hora', 'Temperatura', 'Densidad']];
+                const datosPDF = registros.map(r => [
+                    r.barril,
+                    r.fecha,
+                    r.hora,
+                    `${r.temperatura}°C`,
+                    `${r.densidad} kg/m³`
+                ]);
+
+                doc.autoTable({
+                    startY: 30,
+                    head: headers,
+                    body: datosPDF,
+                    theme: 'grid',
+                    styles: { fontSize: 10 },
+                    headStyles: { fillColor: [52, 73, 94] }
+                });
+
+                doc.save(`Reporte_Vinificacion_${new Date().toISOString().slice(0,10)}.pdf`);
+            }
+        });
+    </script>
+</body>
+</html>
